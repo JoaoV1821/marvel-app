@@ -1,9 +1,11 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, Text} from 'react-native'
 
 const Aluguel = (): React.JSX.Element => {
   return (
-    <View>Aluguel</View>
+    <View>
+      <Text>Aluguel</Text>
+    </View>
   )
 }
 
