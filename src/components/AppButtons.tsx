@@ -22,13 +22,13 @@ const style = StyleSheet.create({
         textAlign: 'center',
         width: 255,
         height: 50,
-        backgroundColor: '#094275',
+        backgroundColor: '#D6000A',
         borderRadius: 20,
         
     },
 
     text: {
-        fontFamily: 'Montsserrat',
+
         fontStyle: 'normal',
         fontSize: 25,
         color: '#FFFFFF', 

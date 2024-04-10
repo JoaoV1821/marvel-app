@@ -3,13 +3,16 @@ import { View , StyleSheet, Text} from 'react-native'
 import Forms from '../components/Forms'
 
 
-const Autocadastro = (): React.JSX.Element => {
+const Autocadastro = ({navigation}): React.JSX.Element => {
 
   return (
 
     <View style={styles.body}>
         <Forms method='POST'/>
-        
+        <View style={styles.line} />
+      <Text style={styles.smallText} onPress={() => navigation.navigate('Login')}>
+        Já possui uma conta? Toque para fazer login
+      </Text>
     </View>
   )
 }
@@ -22,7 +25,7 @@ const styles = StyleSheet.create({
   line: {
     borderBottomColor: '#717F7F',
     borderBottomWidth: 1,
-    marginTop: 10  
+    marginTop: 150 
   },
   
   smallText: {

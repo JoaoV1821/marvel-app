@@ -17,9 +17,9 @@ const MainScreens = () => {
       tabBarInactiveBackgroundColor: '#094275',    
       tabBarActiveBackgroundColor: '#094275'
     }}>
-    <Tab.Screen name="Dashboard" component={Dashboard} />
-    <Tab.Screen name="UpdateCadastro" component={UpdateCadastro} />
-    <Tab.Screen name="Aluguel" component={Aluguel} />
+    <Tab.Screen name="Dashboard" component={Dashboard}  options={{headerShown: false}} />
+    <Tab.Screen name="UpdateCadastro" component={UpdateCadastro}  options={{headerShown: false}} />
+    <Tab.Screen name="Aluguel" component={Aluguel}  options={{headerShown: false}}/>
   </Tab.Navigator>
   )
 }
@@ -35,7 +35,6 @@ export default function App(): React.JSX.Element {
           <Stack.Screen name="Autocadastro" component={Autocadastro} options={{headerShown: false}} />
           <Stack.Screen name="mainscreens" component={MainScreens} options={{headerShown: false}} />
       </Stack.Navigator>
-
     </NavigationContainer>
   )
   

@@ -5,6 +5,7 @@ import TextField from './TextField';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {object, string} from 'yup';
 import User from '../models/UserModel';
+import { AppButton } from './AppButtons';
 
 interface Input {
   email: string,
@@ -49,20 +50,25 @@ useEffect(() => {
   
   return (
     <View>
+      <Text style={styles.title}>{props.method == 'POST' ?'Autocadastro': 'Atualização' }</Text>
       <View style={styles.container}>
-        <Text style={styles.title}>{props.method == 'POST' ?'Autocadastro': 'Atualização' }</Text>
+      
         <TextField label={'Nome'}  style={errors.nome ? styles.error: styles.input} placeholder="Nome" onChangeText={(text: string) => setValue('nome', text)} error={errors?.nome} />
         <TextField label={'Email'} placeholder="Email" onChangeText={(text: string) => setValue('email', text)} error={errors?.email}  style={errors.email ? styles.error: styles.input} />
-        <TextField label={'Senha'} placeholder="Senha" onChangeText={(text: string) => setValue('senha', text)} error={errors?.senha}  style={errors.senha ? styles.error: styles.input} />
+        <TextField label={'Senha'} placeholder="Senha" onChangeText={(text: string) => setValue('senha', text)} error={errors?.senha}  style={errors.senha ? styles.error: styles.input} secureTextEntry={true} />
         <TextField  label={'Telefone'} placeholder="Telefone" onChangeText={(text: string) => setValue('telefone', text)} error={errors?.telefone}  style={errors.telefone ? styles.error: styles.input}/>
-        <Button title='Enviar' onPress={handleSubmit(onSubmit)} />
+        <AppButton title='Enviar' onPress={handleSubmit(onSubmit)} />
       </View>
-     
+      
     </View>
   )
 }
 
 const  styles = StyleSheet.create({
+  body: {
+    backgroundColor: "#fff",
+    height: "100%",
+},
 
 error: {
   backgroundColor: '#F1F5F4',
@@ -81,7 +87,7 @@ container: {
   justifyContent: 'space-between',
   width: '90%',
   height: Dimensions.get('window').height * 0.5, // Ajusta a altura para 50% da altura da tela
-  marginTop: 190, // Remove o marginTop anterior
+  marginTop: 30, // Remove o marginTop anterior
   marginLeft: 20,
   backgroundColor: '#fff',
 },
@@ -89,7 +95,8 @@ container: {
 title : {
   color: "#094275",
   fontSize: 40,
-  marginTop: 30,
+  marginTop: 130,
+  textAlign: 'center'
   
 },
 
@@ -101,7 +108,7 @@ input: {
   paddingLeft: 20,
 
 },
-
+ 
 password: {
   width: "90%",
   height: 50,
@@ -110,19 +117,6 @@ password: {
   
 },
 
-line: {
-  borderBottomColor: '#717F7F',
-  borderBottomWidth: 1,
-  marginTop: 150
-
-},
-
-smallText: {
-  color: '#717F7F',
-  left: 40,
-  top: 45,
-  fontSize: 17
-}, 
 
 })
 export default Forms

@@ -1,17 +1,15 @@
 import React, {useEffect} from 'react'
-import { View, Text, Alert, StyleSheet, Dimensions} from 'react-native'
+import { View, Text, Alert, StyleSheet, Dimensions, Image, ImageBackground} from 'react-native'
 import { useForm } from 'react-hook-form'
 import TextField from '../components/TextField';
 import { yupResolver } from "@hookform/resolvers/yup"
 import {object, string} from 'yup'
 import { AppButton } from '../components/AppButtons';
 
-
 interface Input {
   email: string,
   senha: string
 }
-
 
 const Login = ({navigation}): React.JSX.Element => {
   const fieldsValidationSchema = object().shape({
@@ -24,6 +22,7 @@ const Login = ({navigation}): React.JSX.Element => {
   
 
   const  onSubmit = (data: Input) => {
+    console.warn('oi')
      navigation.navigate('mainscreens')
   }
 
@@ -34,20 +33,32 @@ const Login = ({navigation}): React.JSX.Element => {
   }, [register])
 
   return (
-    <View style={styles.body}>
+    <View>
+      
       <View style={styles.container}>
+        <ImageBackground source={require('../../assets/background.jpg')} style={styles.img} imageStyle={{opacity:0.65, backgroundColor: '#000'}} >
 
-        <Text style={styles.title}>Login</Text>
-          
-        <TextField label={'Email'} placeholder={'Digite seu email'} onChangeText={(text: string) => setValue( "email", text)} error={errors?.email} style={errors.email ? styles.error: styles.input} />
-        <TextField label={'Senha'} placeholder={'Digite sua senha'} onChangeText={(text: string) => setValue( "senha", text)} error={errors?.senha} style={errors.senha ? styles.error: styles.input} secureTextEntry={true}/>
-        <AppButton onPress={handleSubmit(onSubmit)} title={'Entrar'}/>
-        
+          <View style={styles.imgBack}>
+            <View style={styles.opacity}>
+            <Image source={require('../../assets/logo.png')} style={{width: '80%', height: '30%', top: 90, left: 40}}/>
+            <View style={styles.loginContainer}>
+            
+                  <TextField label={'Email'} placeholder={'Digite seu email'} onChangeText={(text: string) => setValue( "email", text)} error={errors?.email} style={errors.email ? styles.error: styles.input} />
+                  <TextField label={'Senha'} placeholder={'Digite sua senha'} onChangeText={(text: string) => setValue( "senha", text)} error={errors?.senha} style={errors.senha ? styles.error: styles.input} secureTextEntry={true}/>
+                  <AppButton onPress={handleSubmit(onSubmit)} title={'Entrar'}/>
+                  <Text style={styles.smallText} onPress={() => navigation.navigate('Autocadastro')}>
+                      Não tem uma conta? Toque para criar uma
+                  </Text>
+              </View>
+            </View>
+             
+    
+        </View>
+     
+        </ImageBackground>
+
       </View>
-      <View style={styles.line} />
-      <Text style={styles.smallText} onPress={() => navigation.navigate('Autocadastro')}>
-        Não tem uma conta? Toque para criar uma
-      </Text>
+
     </View>
   )
 }
@@ -57,69 +68,98 @@ const  styles = StyleSheet.create({
 
   body: {
     backgroundColor: "#fff",
-    height: "100%"
+    height: "100%",
+
 },
 
-error: {
-  backgroundColor: '#F1F5F4',
-  borderRadius: 20,
-  width: 300,
-  height: 60,
-  paddingLeft: 20,
-  borderColor: '#FF0000',
-  borderWidth: 1
-},
+  imgBack: {
+    flexDirection:'column',  
+    alignItems:"center" , 
+    justifyContent:"space-around", 
+    width: '100%',
+    height: '100%'
+  },
 
-container: {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '90%',
-  height: Dimensions.get('window').height * 0.5,
-  marginTop: 190, 
-  marginLeft: 20,
-  backgroundColor: '#fff',
-},
+  opacity: {
+    backgroundColor: '#000',
+    opacity: 0.75,
+    width: '100%',
+    height: '100%'
+  },
 
-title : {
+  loginContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    top: 170,
+    opacity: 1.0
+  },
+
+  error: {
+    backgroundColor: '#414141',
+    borderRadius: 20,
+    width: 300,
+    height: 60,
+    paddingLeft: 20,
+    borderColor: '#FF0000',
+    borderWidth: 1
+  },
+
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    height: Dimensions.get('window').height * 1.1, 
+  },
+
+  title : {
+    color: "#094275",
+    fontSize: 40,
+    marginTop: 30,
+  },
+
+  input: {
+    backgroundColor: '#414141',
+    opacity: 1.0,
+    color:'white' ,  
+    borderRadius: 20,
+    width: 300,
+    height: 60,
+    paddingLeft: 20,
+    marginBottom: 25,
+  },
+
+  password: {
+    width: "90%",
+    height: 50,
+    borderColor: 'black',
+    borderWidth: 2
+  },
+
+  line: {
+    borderBottomColor: '#000',
+    borderBottomWidth: 1,
+    
+  },
+
+
+  smallText: {
+    color: '#fff',
+    left: 5,
+    top: 45,
+    fontSize: 17
+  },
+
+  img : {
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems: "center",
+    height: '100%',
+    width: '100%',
   
-  color: "#094275",
-  fontSize: 40,
-  marginTop: 30,
-  
-},
-
-input: {
-  backgroundColor: '#F1F5F4',
-  borderRadius: 20,
-  width: 300,
-  height: 60,
-  paddingLeft: 20,
-
-},
-
-password: {
-  width: "90%",
-  height: 50,
-  borderColor: 'black',
-  borderWidth: 2
-  
-},
-
-line: {
-  borderBottomColor: '#717F7F',
-  borderBottomWidth: 1,
-  marginTop: 150
-
-},
-
-smallText: {
-  color: '#717F7F',
-  left: 40,
-  top: 45,
-  fontSize: 17
-}, 
+  }
 
 })
 
