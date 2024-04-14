@@ -14,7 +14,7 @@ interface Input {
 const Login = ({navigation}): React.JSX.Element => {
   const fieldsValidationSchema = object().shape({
     email: string().required('*Digite seu email!').email('*Email inválido!'),
-    senha: string().required('*Digite sua senha!').min(6, 'A senha deve conter pelo menos 6 dígitos')
+    senha: string().required('*Digite sua senha!').min(6, '*A senha deve conter pelo menos 6 dígitos')
 })
   const {register, setValue, handleSubmit, formState: {errors}} = useForm({
     resolver: yupResolver(fieldsValidationSchema)
@@ -43,14 +43,14 @@ const Login = ({navigation}): React.JSX.Element => {
             <Image source={require('../../assets/logo.png')} style={{width: '80%', height: '30%', top: 90, left: 40}}/>
             <View style={styles.loginContainer}>
             
-                  <TextField label={'Email'} placeholder={'Digite seu email'} onChangeText={(text: string) => setValue( "email", text)} error={errors?.email} style={errors.email ? styles.error: styles.input} />
-                  <TextField label={'Senha'} placeholder={'Digite sua senha'} onChangeText={(text: string) => setValue( "senha", text)} error={errors?.senha} style={errors.senha ? styles.error: styles.input} secureTextEntry={true}/>
+                  <TextField label={'Email'} placeholder={'Digite seu email'} onChangeText={(text: string) => setValue( "email", text)} error={errors?.email} style={errors.email ? styles.error: styles.input}   placeholderTextColor={'white'} />
+                  <TextField label={'Senha'} placeholder={'Digite sua senha'} onChangeText={(text: string) => setValue( "senha", text)} error={errors?.senha} style={errors.senha ? styles.error: styles.input} secureTextEntry={true} placeholderTextColor={'white'}/>
                   <AppButton onPress={handleSubmit(onSubmit)} title={'Entrar'}/>
                   <Text style={styles.smallText} onPress={() => navigation.navigate('Autocadastro')}>
                       Não tem uma conta? Toque para criar uma
                   </Text>
               </View>
-            </View>
+           </View>
              
     
         </View>
@@ -129,6 +129,7 @@ const  styles = StyleSheet.create({
     height: 60,
     paddingLeft: 20,
     marginBottom: 25,
+  
   },
 
   password: {

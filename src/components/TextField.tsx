@@ -5,7 +5,7 @@ const TextField = ({label, placeholder, onChangeText, error, ...input}): React.J
   return (
     <View>
         <Text style={{color: 'white'}}>{label}</Text>
-        <TextInput placeholder={placeholder} onChangeText={onChangeText} style={input.style} keyboardType={input.keyboardType} autoComplete={input.autoComplete}  secureTextEntry={input.secureTextEntry} underlineColorAndroid="transparent"/>
+        <TextInput placeholder={placeholder} onChangeText={onChangeText} style={input.style} keyboardType={input.keyboardType} autoComplete={input.autoComplete}  secureTextEntry={input.secureTextEntry} underlineColorAndroid="transparent" placeholderTextColor={input.placeholderTextColor}/>
         {!!error && <Text style={{color: 'red'}}>{error.message}</Text>}
     </View>
   )
