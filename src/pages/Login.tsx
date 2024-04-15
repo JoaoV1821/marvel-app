@@ -22,7 +22,6 @@ const Login = ({navigation}): React.JSX.Element => {
   
 
   const  onSubmit = (data: Input) => {
-    console.warn('oi')
      navigation.navigate('mainscreens')
   }
 
@@ -54,7 +53,7 @@ const Login = ({navigation}): React.JSX.Element => {
              
     
         </View>
-     
+      
         </ImageBackground>
 
       </View>
@@ -102,7 +101,8 @@ const  styles = StyleSheet.create({
     height: 60,
     paddingLeft: 20,
     borderColor: '#FF0000',
-    borderWidth: 1
+    borderWidth: 1,
+    color: 'white'
   },
 
   container: {
