@@ -1,6 +1,5 @@
 import React from 'react'
 import { View , Text, StyleSheet} from 'react-native'
-import { DrawerNavigator } from '../navigation/Drawer';
 
 
 export const Card = (props) => {
