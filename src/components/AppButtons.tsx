@@ -3,7 +3,17 @@ import { StyleSheet, Text, TouchableHighlight} from "react-native";
 
 export const AppButton = (props: any) => {
     return (
-        <TouchableHighlight style={style.button} onPress={props.onPress} >
+        <TouchableHighlight style={{
+
+           
+            width: 255,
+            height: 50,
+            backgroundColor: '#D6000A',
+            borderRadius: 20,
+            alignItems:"center",
+            marginLeft: props.marginLeft ? props.marginLeft : 1,
+            marginTop: props.marginTop ?  props.marginTop : 1
+        }} onPress={props.onPress} >
            <Text style={style.text}>{props.title}</Text>
         </TouchableHighlight>
     )

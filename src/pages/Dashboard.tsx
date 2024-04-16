@@ -14,7 +14,7 @@ export const Card = (props) => {
 const Dashboard = (): React.JSX.Element => {
 
   return (
-    <View>
+    <View style={style.body}>
 
       <Text style={style.title}>Marvel Store</Text>
       <View style={style.container}>
@@ -45,6 +45,12 @@ const style = StyleSheet.create({
     marginBottom: 10
  },
 
+ body: {
+  backgroundColor: '#000',
+  height: '100%',
+  
+ },
+
   card : {
     display: 'flex',
     flexDirection: 'column',
@@ -65,7 +71,9 @@ container: {
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     marginRight: 10,
-    marginTop: 120
+  
+    height: '100%',
+    backgroundColor: '#000'
 }
 
 
