@@ -6,7 +6,7 @@ const UpdateCadastro = ({navigation}): React.JSX.Element => {
   return (
     <View  style={styles.body}>
 
-    <Text style={{color: 'white', fontSize: 20, top: 70, left: 15}} onPress={()=>{navigation.goBack()}}> Voltar </Text>
+    <Text style={{color: 'white', fontSize: 20, top: 70, left: 15}} onPress={()=>{navigation.navigate('mainscreens')}}> Voltar </Text>
 
       <View style={styles.loginContainer}>
         <Forms method='PUT'/>
