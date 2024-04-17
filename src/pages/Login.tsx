@@ -22,7 +22,7 @@ const Login = ({navigation}): React.JSX.Element => {
   
 
   const  onSubmit = (data: Input) => {
-     navigation.navigate('mainscreens')
+     navigation.navigate('drawler')
   }
 
   useEffect(() => {

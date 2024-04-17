@@ -1,5 +1,24 @@
 import React from 'react'
-import { View , Text, StyleSheet} from 'react-native'
+import { View , Text, StyleSheet, ScrollView} from 'react-native'
+
+
+const comics = [
+  {
+    'title': 'Spider-Man',
+    'text':'1'
+  
+  },
+
+  {
+    'title': 'Iron Man',
+    'text':'2'
+  },
+
+  {
+    'title': 'The Amazing Spider-Man',
+    'text':'3'
+  }
+]
 
 
 export const Card = (props) => {
@@ -17,18 +36,26 @@ const Dashboard = (): React.JSX.Element => {
     <View style={style.body}>
 
       <Text style={style.title}>Marvel Store</Text>
+
+      <Text style={{color: 'white'}}>Recomendações</Text>
       <View style={style.container}>
-        
-        <Card title={"Titulo"} text={'Texto'}/>
 
-      
-        <Card title={"Titulo"} text={'Texto'}/>
-
+      <ScrollView
+          horizontal={true}
+          contentContainerStyle={{ width: `${100 * 5}%` }}
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={200}
+          decelerationRate="fast"
+          pagingEnabled
+        >
+          {comics.map((comic) => {
+              return (
+                <Card title={comic.title} text={comic.text}/>
+              )
+          })}
+      </ScrollView>
         
-        <Card title={"Titulo"} text={'Texto'}/>
-
         
-        <Card title={"Titulo"} text={'Texto'}/>
       </View>
     </View>
     

@@ -1,22 +1,35 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import Forms from '../components/Forms'
 
-const UpdateCadastro = (): React.JSX.Element => {
+const UpdateCadastro = ({navigation}): React.JSX.Element => {
   return (
     <View  style={styles.body}>
+
+    <Text style={{color: 'white', fontSize: 20, top: 70, left: 15}} onPress={()=>{navigation.goBack()}}> Voltar </Text>
+
+      <View style={styles.loginContainer}>
         <Forms method='PUT'/>
+      </View>
+       
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   body: {
-    backgroundColor: "#fff",
+    backgroundColor: "#000",
     height: "100%"
 },
 
-})
+loginContainer: {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  top: 190,
+  opacity: 1.0
+},
 
+})
 
 export default UpdateCadastro
