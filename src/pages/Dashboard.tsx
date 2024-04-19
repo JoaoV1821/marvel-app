@@ -1,5 +1,7 @@
 import React from 'react'
-import { View , Text, StyleSheet, ScrollView} from 'react-native'
+import { View , Text, StyleSheet} from 'react-native'
+import Carousel from '../components/Carousel'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 const comics = [
@@ -33,39 +35,16 @@ export const Card = (props) => {
 const Dashboard = (): React.JSX.Element => {
 
   return (
-    <View style={style.body}>
-
-      <Text style={style.title}>Marvel Store</Text>
-
-      <Text style={{color: 'white'}}>Recomendações</Text>
-      <View style={style.container}>
-
-      <ScrollView
-          horizontal={true}
-          contentContainerStyle={{ width: `${100 * 5}%` }}
-          showsHorizontalScrollIndicator={false}
-          scrollEventThrottle={200}
-          decelerationRate="fast"
-          pagingEnabled
-        >
-          {comics.map((comic) => {
-              return (
-                <Card title={comic.title} text={comic.text}/>
-              )
-          })}
-      </ScrollView>
-        
-        
-      </View>
-    </View>
-    
+    <SafeAreaView style={style.body}>      
+      <Carousel/>
+    </SafeAreaView>
   )
 }
 
 const style = StyleSheet.create({
 
   title: {
-    color: "#094275",
+    color: "white",
     fontSize: 40,
     marginTop: 60,
     marginLeft:10,
@@ -83,7 +62,7 @@ const style = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#F1F5F4',
     borderRadius: 10,
-    width: 209,
+    width: 300,
     height: 82,
     shadowColor: 'black',
     shadowOpacity: 0.9,
