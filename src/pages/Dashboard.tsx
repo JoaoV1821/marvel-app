@@ -1,27 +1,37 @@
 import React from 'react'
 import { View , Text, StyleSheet} from 'react-native'
-import Carousel from '../components/Carousel'
+import {Carousel, MiddleCarousel} from '../components/Carousel'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-
-const comics = [
+const carouselData = [
   {
-    'title': 'Spider-Man',
-    'text':'1'
+    id: '01',
+    image: require('../../assets/comic.jpg'),
+    date: '23/04/2023'
+  },
+
+  {
+    id: '02',
+    image: require('../../assets/comic.jpg'),
+    date: '23/04/2023'
+  },
+
+  {
+    id: '03',
+    image: require('../../assets/comic.jpg'),
+    date: '23/04/2023'
+  },
+
+  {
+    id: '04',
+    image: require('../../assets/comic.jpg'),
+    date: '23/04/2023'
+  },
+
   
-  },
 
-  {
-    'title': 'Iron Man',
-    'text':'2'
-  },
 
-  {
-    'title': 'The Amazing Spider-Man',
-    'text':'3'
-  }
-]
-
+];
 
 export const Card = (props) => {
   return (
@@ -36,7 +46,16 @@ const Dashboard = (): React.JSX.Element => {
 
   return (
     <SafeAreaView style={style.body}>      
-      <Carousel/>
+      <Carousel data={carouselData}/>
+      <View style={{marginTop: 20}}>
+        <Text style={{color:'white', marginLeft: 15}}>Alugados</Text>
+        <MiddleCarousel data={carouselData} local='middle'/>
+      </View>
+
+      <View style={{marginTop: 30}}>
+        <Text style={{color:'white', marginLeft: 15}}>Recomendados</Text>
+        <MiddleCarousel data={carouselData}/>
+      </View>
     </SafeAreaView>
   )
 }
