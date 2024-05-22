@@ -8,8 +8,7 @@ import { MainStackNavigator } from './src/routes/mainStack.routes';
 
 
 export default function App(): React.JSX.Element {
-  const Stack = createNativeStackNavigator();
-
+  
   return (
     <NavigationContainer>
       <MainStackNavigator/>

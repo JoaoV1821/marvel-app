@@ -68,25 +68,26 @@ export const MiddleCarousel = (props) => {
 const renderMiddle = ({item, index}) => {
   return (
     <View style={{flex: 1, alignItems: 'center'}} key={index}>
-         <Image source={item.image} style={{height: 200, width: 120, margin: 10}} />
+         <Image source={{uri: item.image}} style={{height: 200, width: 120, margin: 10}} />
          <Text style={{color: 'white'}}>Data de devolução</Text>
          <Text style={{color: 'white'}}>{item.date}</Text>
     </View>
   )
 }
 
-const renderTop = ({item, index}) => {
+
+const renderBottom = ({item, index}) => {
   return (
     <View style={{flex: 1, alignItems: 'center'}} key={index}>
-         <Image source={item.image} style={{height: 200, width: 120, margin: 10}} />
-
+         <Image source={{uri: item.image}} style={{height: 200, width: 120, margin: 10}} />
+      
     </View>
   )
 }
 
     return (
       <View>
-          <FlatList data={props.data} renderItem={props.local === 'middle' ? renderMiddle : renderTop} horizontal={true} pagingEnabled={true} keyExtractor={(item) => item.id} onScroll={handleScroll}/>      
+          <FlatList data={props.data} renderItem={props.local === 'middle' ? renderMiddle : renderBottom} horizontal={true} pagingEnabled={true} keyExtractor={(item) => item.id} onScroll={handleScroll}/>      
       </View>
     )
 }
