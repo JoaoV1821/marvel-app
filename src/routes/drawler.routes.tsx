@@ -6,6 +6,7 @@ import Profile from '../pages/Profile';
 import { AppButton } from '../components/AppButtons';
 import {SafeAreaView, View, StyleSheet, Image, Text, Linking, } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList, } from '@react-navigation/drawer';
+import React from 'react';
 
 const stack = createDrawerNavigator();
 
