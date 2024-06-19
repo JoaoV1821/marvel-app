@@ -3,9 +3,9 @@ import axios from "axios";
 const instance = axios.create({
     baseURL: 'http://gateway.marvel.com',
     params: {
-        "apikey": "your api key",
-        "ts": "a timestamp",
-        "hash": "your hash"
+        "apikey": "ca513d3d0b4cf9666f526e3092deebf7",
+        "ts": "1",
+        "hash": "85e371482fd26779b4bc9cf3e8b1ca1a"
     },
 })
 
@@ -15,7 +15,7 @@ export const getComicList = async  () => {
 
     const json = response.data;
 
-    return json;
+    return json.data.results;
 }
 
 export const postUser = async (user) => {

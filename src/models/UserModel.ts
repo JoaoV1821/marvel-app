@@ -8,7 +8,7 @@ export default class User {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.telefone = telefone
+        this.telefone = telefone;
     }
     
 
@@ -26,11 +26,7 @@ export default class User {
 
     }
 
-    public consultar() {
-
-    }
-
-
+    
     get Nome(): string {
         return this.nome;
     }

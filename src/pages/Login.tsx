@@ -145,7 +145,6 @@ const  styles = StyleSheet.create({
     
   },
 
-
   smallText: {
     color: '#fff',
     left: 5,
@@ -153,6 +152,7 @@ const  styles = StyleSheet.create({
     fontSize: 17
   },
 
+  
   img : {
     resizeMode: "cover",
     justifyContent: "center",

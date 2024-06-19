@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, FlatList, Dimensions , Text} from 'react-native';
+import { View, Image, FlatList, Dimensions, Text, Alert } from 'react-native';
 
 export const Carousel = (props) => {
 
@@ -66,11 +66,12 @@ export const MiddleCarousel = (props) => {
 }
 
 const renderMiddle = ({item, index}) => {
+  
   return (
-    <View style={{flex: 1, alignItems: 'center'}} key={index}>
-         <Image source={{uri: item.image}} style={{height: 200, width: 120, margin: 10}} />
-         <Text style={{color: 'white'}}>Data de devolução</Text>
-         <Text style={{color: 'white'}}>{item.date}</Text>
+    <View style={{flex: 1, alignItems: 'center'}} key={item.id}>
+        
+         <Image source={{uri: item.img}} style={{height: 200, width: 120, margin: 10}} />
+         
     </View>
   )
 }
@@ -78,8 +79,9 @@ const renderMiddle = ({item, index}) => {
 
 const renderBottom = ({item, index}) => {
   return (
-    <View style={{flex: 1, alignItems: 'center'}} key={index}>
-         <Image source={{uri: item.image}} style={{height: 200, width: 120, margin: 10}} />
+    <View style={{flex: 1, alignItems: 'center'}} key={item.id}>
+         <Image source={{uri: item.img}} style={{height: 200, width: 120, margin: 10}} />
+         
       
     </View>
   )

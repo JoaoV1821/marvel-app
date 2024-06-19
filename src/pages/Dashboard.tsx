@@ -1,62 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View , Text, StyleSheet} from 'react-native'
 import {Carousel, MiddleCarousel} from '../components/Carousel'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
-const carouselData = [
-  {
-    id: '01',
-    image: 'https://i.annihil.us/u/prod/marvel/i/mg/1/e0/4bb4ecb6aa5a9.jpg',
-    date: '23/04/2023'
-  },
-
-  {
-    id: '02',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/d/70/4bc69c7e9b9d7.jpg',
-    date: '23/04/2023'
-  },
-
-  {
-    id: '03',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/c/80/4bc5fe7a308d7.jpg',
-    date: '23/04/2023'
-  },
-
-  {
-    id: '04',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg',
-    date: '23/04/2023'
-  },
-
-];
-
-const caroussel= [
-  {
-    id: '01',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/4/20/4bc697c680890.jpg',
-  
-  },
-
-  {
-    id: '02',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/d/70/4bc69c7e9b9d7.jpg',
-  
-  },
-
-  {
-    id: '03',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/c/80/4bc5fe7a308d7.jpg',
-    
-  },
-
-  {
-    id: '04',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/c/60/4bc69f11baf75.jpg',
-    
-  },
-
-];
-
+import { getComicList } from '../services/API'
+import ComicModel from '../models/ComicsModel'
 
 
 const topCaroussel = [
@@ -84,17 +31,43 @@ export const Card = (props) => {
 
 const Dashboard = (): React.JSX.Element => {
 
+  const [response, setResponse] = useState([]);
+  const [comics, setComics] = useState([]);
+  
+  const handleResponse =  async () => {
+      const result = await getComicList();
+      const hqs = [];
+
+      console.log(result['results']);
+
+      result.map((comic: any) => {
+        const hq = new ComicModel(comic.id, comic.title, `${comic.thumbnail.path}.${comic.thumbnail.extension}`);
+        console.log(hq);
+        hqs.push(hq);
+      })
+
+      setResponse(hqs);
+      console.log(response);
+
+  }
+
+  useEffect (() => {
+      handleResponse();
+  }, [])
+  
+
   return (
+ 
     <SafeAreaView style={style.body}>      
       <Carousel data={topCaroussel}/>
       <View style={{marginTop: 20}}>
-        <Text style={{color:'white', marginLeft: 15}}>Alugados</Text>
-        <MiddleCarousel data={carouselData} local='middle'/>
+        <Text style={{color:'white', marginLeft: 15}}>Mais Alugados</Text>
+        <MiddleCarousel data={response} local='middle'/>
       </View>
 
       <View style={{marginTop: 30}}>
         <Text style={{color:'white', marginLeft: 15}}>Recomendados</Text>
-        <MiddleCarousel data={caroussel}/>
+        <MiddleCarousel data={response}/>
       </View>
     </SafeAreaView>
   )
