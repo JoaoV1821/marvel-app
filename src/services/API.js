@@ -9,6 +9,23 @@ const instance = axios.create({
     },
 })
 
+const instanceBack = axios.create({
+    baseURL: 'http://localhost:8080',
+});
+
+
+export const getAllUsers = async () => {
+
+    try {
+        const response = await instanceBack.get('/v1/usuarios/list');
+
+        return response.data;
+    } catch(error) {
+        console.error(error.message);
+    }
+    
+}
+
 
 export const getComicList = async  () => {
     const response = await instance.get('v1/public/comics');

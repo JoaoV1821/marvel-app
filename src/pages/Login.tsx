@@ -1,10 +1,13 @@
-import React, {useEffect} from 'react'
-import { View, Text, Alert, StyleSheet, Dimensions, Image, ImageBackground} from 'react-native'
-import { useForm } from 'react-hook-form'
+import React, {useEffect, useState} from 'react'
+import { View, Text, StyleSheet, Dimensions, Image, ImageBackground} from 'react-native'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import TextField from '../components/TextField';
 import { yupResolver } from "@hookform/resolvers/yup"
 import {object, string} from 'yup'
 import { AppButton } from '../components/AppButtons';
+import { getAllUsers } from '../services/API';
+import { useDispatch } from 'react-redux';
+import userActions from '../actions/userActions';
 
 interface Input {
   email: string,
@@ -12,17 +15,43 @@ interface Input {
 }
 
 const Login = ({navigation}): React.JSX.Element => {
+
+  const dispatch = useDispatch();
+  const [user, setUser] = useState([]);
+  
+
+  const handleGetAllUsers = async () => {
+    
+     await getAllUsers().then((response) => {
+        setUser(response);
+     }) ;
+   
+  }
+
+
+
   const fieldsValidationSchema = object().shape({
     email: string().required('*Digite seu email!').email('*Email inválido!'),
     senha: string().required('*Digite sua senha!').min(6, '*A senha deve conter pelo menos 6 dígitos')
 })
+
+
   const {register, setValue, handleSubmit, formState: {errors}} = useForm({
     resolver: yupResolver(fieldsValidationSchema)
   })
-  
+ 
+  const onSubmit: SubmitHandler<Input> = async (data) => {
+    
+    await handleGetAllUsers();
 
-  const  onSubmit = (data: Input) => {
-     navigation.navigate('drawler')
+    const foundUser = user.find((u: Input) => data.email === u.email && data.senha === u.senha);
+  
+    if (foundUser) {
+      dispatch(userActions.setUser(foundUser));
+      navigation.navigate('drawler')
+    } else {
+      console.log("User not found");
+    }
   }
 
   useEffect(() => {

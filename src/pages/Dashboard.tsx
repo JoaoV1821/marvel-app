@@ -3,6 +3,8 @@ import { View , Text, StyleSheet} from 'react-native'
 import {Carousel, MiddleCarousel} from '../components/Carousel'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { getComicList } from '../services/API'
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducers'
 import ComicModel from '../models/ComicsModel'
 
 
@@ -33,6 +35,7 @@ const Dashboard = (): React.JSX.Element => {
 
   const [response, setResponse] = useState([]);
   const [comics, setComics] = useState([]);
+  const currentUser = useSelector((state: RootState) => state.currentUser);
   
   const handleResponse =  async () => {
       const result = await getComicList();
@@ -47,8 +50,7 @@ const Dashboard = (): React.JSX.Element => {
       })
 
       setResponse(hqs);
-      console.log(response);
-
+      console.log(currentUser)
   }
 
   useEffect (() => {
