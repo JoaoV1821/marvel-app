@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import { View, Button, Dimensions, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Dimensions, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import {useForm} from 'react-hook-form'
 import TextField from './TextField';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {object, string} from 'yup';
 import User from '../models/UserModel';
 import { AppButton } from './AppButtons';
+import { RootState } from '../reducers';
 import * as ImagePicker from 'expo-image-picker';
 
 
@@ -18,11 +20,20 @@ interface Input {
 
 const Forms = (props: {method: string}) => { 
   const [selectedImage, setSelectedImage] = useState(null);
+  
+  const currentUser = props.method === 'PUT' ? useSelector( (state: RootState) => state.currentUser.user) : {nome: '', email: '', senha: '', telefone: ''};
+ 
+  const [inputEmail, setInputEmail] = useState(currentUser.email);
+  const [inputNome, setInputNome] = useState(currentUser.nome);
+  const [inputSenha, setInputSenha] = useState(currentUser.senha);
+  const [inputTelefone, setInputTelefone] = useState(currentUser.telefone)
+
 
   function ImageViewer() {
  
-    if(selectedImage) {
+    if (selectedImage) {
       return <Image source={{uri: selectedImage}} style={styles.photoSelected}/>
+
     } else {
       return <Image source={require('../../assets/add-photo.png')} style={styles.photo}/>
     }
@@ -51,19 +62,46 @@ const validationSchema = object().shape({
   telefone: string().matches(new RegExp('[0-9]{2}9[0-9]{8}'), '*Digite um telefone válido!').required('*Digite seu telefone!').length(11, '*Digite um telefone válido!')
 })
 
-const {register, setValue, handleSubmit, formState: {errors}} = useForm({
-  resolver: yupResolver(validationSchema)
+const {register, setValue, handleSubmit, formState: {errors}, getValues} = useForm({
+  resolver: yupResolver(validationSchema),
+  
 })
 
+
+const handleSetValue = (field: string, text: string) => {
+      switch (field) {
+        case 'nome':
+            setValue("nome", text);
+            setInputNome(text);
+          break;
+        
+        case 'email':
+            setValue("email", text);
+            setInputEmail(text);
+          break;
+
+        case 'senha':
+            setValue("senha", text);
+            setInputSenha(text);
+          break;
+
+        case 'telefone':
+            setValue("telefone", text);
+            setInputTelefone(text);
+          break;
+
+      }
+}
+
 useEffect(() => {
-  register('nome');
+  register('nome'); 
   register('email');
   register('senha');
-  register('telefone')
+  register('telefone');
 }, [])  
 
   const onSubmit = (data: Input) => {
-    const user : User  = new User(data.nome, data.email, data.senha, data.telefone);
+    const user : User  = new User(data.nome, data.email, data.senha, data.telefone, currentUser.id);
 
     if(props.method === "POST") {
       user.cadastrar()
@@ -83,14 +121,17 @@ useEffect(() => {
           {ImageViewer()}
       </TouchableOpacity>
 
-  
+   
       <View style={styles.container}>
       
-        <TextField label={'Nome'}  style={errors.nome ? styles.error: styles.input} placeholder="Digite seu nome" onChangeText={(text: string) => setValue('nome', text)} error={errors?.nome} />
-        <TextField label={'Email'} placeholder="Digite seu email" onChangeText={(text: string) => setValue('email', text)} error={errors?.email}  style={errors.email ? styles.error: styles.input} />
-        <TextField label={'Senha'} placeholder="Digite sua senha" onChangeText={(text: string) => setValue('senha', text)} error={errors?.senha}  style={errors.senha ? styles.error: styles.input} secureTextEntry={true} />
-        <TextField  label={'Telefone'} placeholder="Digite seu telefone" onChangeText={(text: string) => setValue('telefone', text)} error={errors?.telefone}  style={errors.telefone ? styles.error: styles.input}/>
-        <AppButton title='Enviar' onPress={handleSubmit(onSubmit)} />
+        <TextField label={'Nome'}  style={errors.nome ? styles.error: styles.input} placeholder="Digite seu nome" onChangeText={(text: string) => handleSetValue('nome', text)} error={errors?.nome} value= {inputNome} />
+
+        <TextField label={'Email'} placeholder="Digite seu email" onChangeText={(text: string) => handleSetValue('email', text)} error={errors?.email}  style={errors.email ? styles.error: styles.input} value= {inputEmail} />
+
+        <TextField label={'Senha'} placeholder="Digite sua senha" onChangeText={(text: string) => handleSetValue('senha', text)} error={errors?.senha}  style={errors.senha ? styles.error: styles.input} secureTextEntry={true} value= {inputSenha} />
+
+        <TextField  label={'Telefone'} placeholder="Digite seu telefone" onChangeText={(text: string) => handleSetValue('telefone', text)} error={errors?.telefone}  style={errors.telefone ? styles.error: styles.input} value= {inputTelefone}/>
+        <AppButton title='Enviar' onPress={handleSubmit(onSubmit)}  />
       </View>
       
     </View>

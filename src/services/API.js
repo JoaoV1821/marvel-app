@@ -37,12 +37,13 @@ export const getComicList = async  () => {
 
 export const postUser = async (user) => {
 
-    await instance.post('', 
+    await instanceBack.post('/v1/usuarios', 
     {
         'nome': user.nome,
         'email': user.email,
         'telefone': user.telefone,
-        'endereco': user.endereco
+        'senha': user.senha,
+        'foto': ''
 
     },
 
@@ -53,11 +54,7 @@ export const postUser = async (user) => {
     }
     
     ).then((response) => {
-        if (response.status === 200) {
-            console.log('Usuário cadastrado')
-        } else {
-            console.log('Erro ao cadastrar')
-        }
+        console.log(response.data);
 
     }).catch((error) => {
         console.log(error.message)
@@ -66,13 +63,15 @@ export const postUser = async (user) => {
 
 export const updateUser = async (user) => {
 
-    console.log(user)
-    await instance.put('', 
+    console.log(user);
+    await instanceBack.put('/v1/usuarios', 
     {
+        'id': user.id,
         'nome': user.nome,
         'email': user.email,
+        'senha': user.senha,
         'telefone': user.telefone,
-        'endereco': user.endereco
+        'foto': ''
 
     },
 
@@ -84,7 +83,7 @@ export const updateUser = async (user) => {
     
     ).then((response) => {
         if (response.status === 200) {
-            console.log('Usuário cadastrado')
+            console.log('Usuário alterado com sucesso')
         } else {
             console.log('Erro ao cadastrar')
         }

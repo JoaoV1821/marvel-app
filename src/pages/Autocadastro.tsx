@@ -5,7 +5,6 @@ import Forms from '../components/Forms'
 
 
 const Autocadastro = ({navigation}): React.JSX.Element => {
-
   
   return (
 

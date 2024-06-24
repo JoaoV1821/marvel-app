@@ -4,11 +4,13 @@ import { updateUser } from "../services/API";
 
 export default class User {
    
-    constructor (private nome: string, private email: string, private senha: string, private telefone: string) {
+    constructor (private nome: string, private email: string, private senha: string, private telefone: string, private id: number) {
+        
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.telefone = telefone;
+        this.id = id;
     }
     
 
