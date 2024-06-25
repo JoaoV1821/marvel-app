@@ -35,6 +35,47 @@ export const getComicList = async  () => {
     return json.data.results;
 }
 
+
+export const getAluguelList = async (id) => {
+    const response = await instanceBack.get(`/v1/alugueis/list/${id}`);
+    return response.data;
+}
+
+export const deleteAluguel = async (id) => {
+
+    try {
+        await instanceBack.delete(`/v1/alugueis/${id}`)
+    } catch(error) {
+        console.log(error.message)
+    }
+   
+}
+
+export const postAluguel = async (aluguel) => {
+    await instanceBack.post('/v1/alugueis', 
+    
+    {
+        "id_user": aluguel.idUser,
+        "id_hq": aluguel.idHq,
+        "titulo": aluguel.titulo,
+        "imagem": aluguel.imagem,
+        "data_devolucao": aluguel.dataDevolucao
+
+
+    },
+
+    {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+).then((response) => {
+    console.log(response)
+}).catch((error) => {
+    console.log(error.message);
+})
+}
+
 export const postUser = async (user) => {
 
     await instanceBack.post('/v1/usuarios', 
@@ -43,7 +84,7 @@ export const postUser = async (user) => {
         'email': user.email,
         'telefone': user.telefone,
         'senha': user.senha,
-        'foto': ''
+        'foto': user.foto
 
     },
 
@@ -96,35 +137,33 @@ export const updateUser = async (user) => {
 
 
 
-export const authenticateUser = async (email, senha) => {
-    await instance.post('user/auth', 
-        {
-            'email': email,
-            'senha': senha
-        },
+export const authenticateUser = async (user) => {
 
-        {
-            headers: {
-                'Content-Type': 'application/json'
+    
+        const response = await instanceBack.post('v1/login', 
+            {
+                'email': user.email,
+                'senha': user.senha
+            },
+    
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             }
-        }
+        
+        )
+
     
-    ).then((response) => {
+
         if (response.status === 200) {
-            return {status: response.status, token: response.data.token}
+            console.log(response.status)
+            return response.data;
+        } 
+
+        if (response.status === 400) {
+            console.log(response.status)
         }
 
-    }).catch((error) => {
-        throw new Error(error.message)
-    })
-}
-
-const getTokenHeader = async  () => {
-
-    try {
-        await instance.get().then()
-    } catch(error) {
-
-    }
-    
+      
 }

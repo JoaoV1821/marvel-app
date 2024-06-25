@@ -1,25 +1,17 @@
+import { postAluguel } from "../services/API";
+
 export default class AluguelComic {
-    constructor(private idComic: number, private userEmail: string, private  dataInicio: Date, private dataFinal: Date ) {
-        this.idComic = idComic;
-        this.userEmail = userEmail;
-        this.dataInicio = dataInicio;
-        this.dataFinal = dataFinal;
+    constructor (private idUser: number, private idHq: number, private titulo: string, private imagem: string, 
+        private dataDevolucao: string
+    ) {
+        this.idUser = idUser;
+        this.idHq = idHq;
+        this.titulo = titulo;
+        this.imagem = imagem;
+        this.dataDevolucao = dataDevolucao;
     }
 
-    get IdComic(): number {
-        return this.idComic;
+    async postAluguel() {
+        await postAluguel(this)
     }
-
-    get UserEmail(): string {
-        return this.userEmail;
-    }
-
-    get DataInicio(): Date {
-        return this.dataInicio;
-    }
-
-    get DataFinal(): Date {
-        return this.dataFinal
-    }
-
 }

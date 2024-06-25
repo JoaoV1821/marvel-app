@@ -2,70 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import TextField from '../components/TextField';
 import { SearchButton } from '../components/SearchButton';
+import { getAluguelList } from '../services/API';
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducers'
+import { deleteAluguel } from '../services/API';
 
-const carouselData = [
-  {
-    id: '01',
-    image: 'https://i.annihil.us/u/prod/marvel/i/mg/1/e0/4bb4ecb6aa5a9.jpg',
-    title: 'Titulo 1',
-    devolucao: '23/09/2024'
-  },
 
-  {
-    id: '02',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/d/70/4bc69c7e9b9d7.jpg',
-    title: 'Titulo 2',
-    data: '23/04/2023',
-    devolucao: '17/05/2024'
-  },
 
-  {
-    id: '03',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/c/80/4bc5fe7a308d7.jpg',
-    title: 'Titulo 3',
-    devolucao: '28/05/2024'
-  },
+const Card = (props: { image: string; title: string; devolucao: string, id:number }) => {
 
-  {
-    id: '04',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg',
-    title: 'Titulo 4',
-    devolucao: '08/06/2024'
-  },
-
-  {
-    id: '05',
-    image: 'https://i.annihil.us/u/prod/marvel/i/mg/1/e0/4bb4ecb6aa5a9.jpg',
-    title: 'Titulo 5',
-    devolucao: '23/04/2060'
-  },
-
-  {
-    id: '06',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/d/70/4bc69c7e9b9d7.jpg',
-    title: 'Titulo 6',
-    data: '23/04/2023',
-    devolucao: '17/05/2088'
-  },
-
-  {
-    id: '07',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/c/80/4bc5fe7a308d7.jpg',
-    title: 'Titulo 7',
-    devolucao: '28/05/2050'
-  },
-
-  {
-    id: '08',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg',
-    title: 'Titulo 8',
-    devolucao: '08/06/2090'
-  },
-
-];
-
-const Card = (props: { image: string; title: string; devolucao: string }) => {
-  const handlePress = () => {
+  const handleDelete = async (id) => {
+      await deleteAluguel(id).then(() => {
+        Alert.alert("Quadrinho devolvido!")
+      })
+  }
+   const handlePress = () => {
     Alert.alert(
       'Devolver Quadrinho',
       `Deseja devolver o quadrinho "${props.title}"?`,
@@ -76,8 +27,8 @@ const Card = (props: { image: string; title: string; devolucao: string }) => {
         },
         {
           text: 'sim',
-          onPress: () => {
-            console.log(`Quadrinho "${props.title}" alugado`);
+          onPress:  async () => {
+            await handleDelete(props.id);
           },
         },
       ]
@@ -92,6 +43,34 @@ const Card = (props: { image: string; title: string; devolucao: string }) => {
     }
   };
 
+
+  function formatDate(dateString: string): string {
+    // Converte a string em um objeto Date
+    let date = new Date(dateString);
+  
+    // Verifica se a data é válida
+    if (isNaN(date.getTime())) {
+      return 'Data inválida';
+    }
+  
+    // Obtém o dia, o mês e o ano da data fornecida
+    let day: number | string = date.getDate();
+    let month: number | string = date.getMonth() + 1; // Os meses em JavaScript são de 0 a 11
+    let year: number = date.getFullYear();
+  
+    // Adiciona um zero à esquerda se o dia ou o mês tiverem apenas um dígito
+    if (day < 10) {
+      day = '0' + day;
+    }
+    if (month < 10) {
+      month = '0' + month;
+    }
+  
+    // Retorna a data no formato dd/mm/yyyy
+    return `${day}/${month}/${year}`;
+  }
+  
+
   return (
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.card}>
@@ -99,7 +78,7 @@ const Card = (props: { image: string; title: string; devolucao: string }) => {
           <Image source={ renderImage(props.image) } style={{ height: 200, width: 120 }} />
           <Text style={{color: 'white'}}>{props.title}</Text>
           <Text style={{color: 'white'}}>Data de devolução</Text>
-          <Text style={{color: 'white'}}>{props.devolucao}</Text>
+          <Text style={{color: 'white'}}>{formatDate(props.devolucao)}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -107,14 +86,27 @@ const Card = (props: { image: string; title: string; devolucao: string }) => {
 };
 
 const Consulta = (): React.JSX.Element => {
-  const [dynamicCarouselData, setDynamicCarouselData] = useState(carouselData);
+  const [dynamicCarouselData, setDynamicCarouselData] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [ value, setValue ] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const currentUser = useSelector((state: RootState) => state.currentUser.user );
+
 
   useEffect(() => {
     handleSort('asc');
+    handleGetComics();
   }, []);
+
+  
+
+  const handleGetComics = async () => {
+     const response =  await getAluguelList(currentUser.id);
+
+     console.log(response)
+     setDynamicCarouselData(response);
+  }
+
 
   const handleSearch = () => {
     onSubmit(value);
@@ -128,19 +120,19 @@ const Consulta = (): React.JSX.Element => {
 
   const onSubmit = (titulo: string) => {
     if (titulo === "") {
-      const sortedData = carouselData.sort((a, b) => {
-        const dateA = converterParaData(a.devolucao);
-        const dateB = converterParaData(b.devolucao);
+      const sortedData = dynamicCarouselData.sort((a, b) => {
+        const dateA = converterParaData(a.aluguelhq_data_devolucao);
+        const dateB = converterParaData(b.aluguelhq_data_devolucao);
         return Number(dateA) - Number(dateB);
       });
       setDynamicCarouselData(sortedData);
       setNoResults(false);
       setSortOrder('desc');
     } else {
-      const filteredData = carouselData.filter((item) => item.title.toLowerCase().includes(titulo.toLowerCase()));
+      const filteredData = dynamicCarouselData.filter((item) => item.hq_titulo.toLowerCase().includes(titulo.toLowerCase()));
       const sortedData = filteredData.sort((a, b) => {
-        const dateA = converterParaData(a.devolucao);
-        const dateB = converterParaData(b.devolucao);
+        const dateA = converterParaData(a.aluguelhq_data_devolucao);
+        const dateB = converterParaData(b.aluguelhq_data_devolucao);
         return Number(dateA) - Number(dateB);
       });
       setDynamicCarouselData(sortedData);
@@ -151,8 +143,8 @@ const Consulta = (): React.JSX.Element => {
 
   const handleSort = (sortOrder: string) => {
     const sortedData = [...dynamicCarouselData].sort((a, b) => {
-      const dateA = converterParaData(a.devolucao);
-      const dateB = converterParaData(b.devolucao);
+      const dateA = converterParaData(a.aluguelhq_data_devolucao);
+      const dateB = converterParaData(b.aluguelhq_data_devolucao);
       if (sortOrder === 'asc') {
         return Number(dateA) - Number(dateB);
       } else {
@@ -182,7 +174,7 @@ const Consulta = (): React.JSX.Element => {
           <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
             {dynamicCarouselData.length !== 0 ? (dynamicCarouselData.map((item, index) => (
                 <View key={item.id} style={{ width: '50%', padding: 5 }}>
-                  <Card image={item.image} title={item.title} devolucao={item.devolucao} />
+                  <Card key={item.id} image={item.hq_imagem} title={item.hq_titulo} devolucao={item.aluguelhq_data_devolucao} id={item.aluguelhq_id}/>
                 </View>
               ))
             ) : (
@@ -198,7 +190,6 @@ const styles = StyleSheet.create({
 
   body: {
     flex: 1,
-    marginTop: 25,
     backgroundColor: '#000',
   },
 
@@ -207,6 +198,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 15,
     marginBottom: 10,
+    marginTop: 25
   },
 
   orderContainer: {

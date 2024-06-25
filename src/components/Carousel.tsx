@@ -11,7 +11,7 @@ export const Carousel = (props) => {
 
   const renderItem = ({item, index}) => {
     return (
-      <View style={{flex: 1}} key={index}>
+      <View style={{flex: 1}} >
         <Image source={item.image} style={{height: 200, width: screenWidth - 40, marginLeft: 20, marginRight: 20}} />
       </View>
     )
@@ -68,9 +68,9 @@ export const MiddleCarousel = (props) => {
 const renderMiddle = ({item, index}) => {
   
   return (
-    <View style={{flex: 1, alignItems: 'center'}} key={item.id}>
+    <View style={{flex: 1, alignItems: 'center'}} >
         
-         <Image source={{uri: item.img}} style={{height: 200, width: 120, margin: 10}} />
+         <Image source={{uri: item.img}} style={{height: 200, width: 120, margin: 10}} key={index}/>
          
     </View>
   )
@@ -79,8 +79,8 @@ const renderMiddle = ({item, index}) => {
 
 const renderBottom = ({item, index}) => {
   return (
-    <View style={{flex: 1, alignItems: 'center'}} key={item.id}>
-         <Image source={{uri: item.img}} style={{height: 200, width: 120, margin: 10}} />
+    <View style={{flex: 1, alignItems: 'center'}} >
+         <Image source={{uri: item.img}} style={{height: 200, width: 120, margin: 10}} key={index}/>
          
       
     </View>
@@ -89,7 +89,7 @@ const renderBottom = ({item, index}) => {
 
     return (
       <View>
-          <FlatList data={props.data} renderItem={props.local === 'middle' ? renderMiddle : renderBottom} horizontal={true} pagingEnabled={true} keyExtractor={(item) => item.id} onScroll={handleScroll}/>      
+          <FlatList  data={props.data} renderItem={props.local === 'middle' ? renderMiddle : renderBottom} horizontal={true} pagingEnabled={true} keyExtractor={(item) => item.id} onScroll={handleScroll}/>      
       </View>
     )
 }

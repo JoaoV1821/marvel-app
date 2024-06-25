@@ -6,6 +6,9 @@ import Profile from '../pages/Profile';
 import { AppButton } from '../components/AppButtons';
 import {SafeAreaView, View, StyleSheet, Image, Text, Linking, } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList, } from '@react-navigation/drawer';
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducers';
+
 import React from 'react';
 
 const stack = createDrawerNavigator();
@@ -13,34 +16,21 @@ const stack = createDrawerNavigator();
 export const Drawler = ({navigation}) => {
 
   const CustomSidebarMenu = (props) => {
+    const currentUser = useSelector((state: RootState) => state.currentUser);
+    const foto = currentUser.user.foto;
+    console.log(currentUser.user.foto)
     return (
       <SafeAreaView style={{display:'flex', height: '75%'}}>
         
         <Image
-          source={require('../../assets/add-photo.png')}
+          source={{uri: currentUser.user.foto}}
           style={styles.sideMenuProfileIcon}
         />
   
-        <Text style={{fontSize: 30, color: 'white', marginLeft: 90, marginTop: 35, marginBottom: 0 }}>Irineu</Text>
+        <Text style={{fontSize: 30, color: 'white', marginLeft: 90, marginTop: 35, marginBottom: 0 }}>{currentUser.user.nome}</Text>
         <DrawerContentScrollView {...props} >
           <DrawerItemList {...props} style={{top: 10}}/>
         
-          <View style={styles.customItem}>
-            <Text style={{color: 'white'}}
-              onPress={() => {
-                Linking.openURL('');
-              }}>
-              Sobre
-            </Text>
-  
-            <Text style={{color: 'white'}}
-              onPress={() => {
-                Linking.openURL('');
-              }}>
-              Compartilhar
-            </Text>
-           
-          </View>
            
         </DrawerContentScrollView>
         <AppButton marginLeft={10} title={'Logout'} top={5} onPress={() => navigation.navigate('Login')}/>
@@ -65,8 +55,7 @@ export const Drawler = ({navigation}) => {
 
           <stack.Screen name="mainscreens" component={MainScreens} options={{headerShown: false, title: 'Início'}} />
           <stack.Screen name="Alterar Cadastro" component={UpdateCadastro} options={{headerShown: false, drawerLabel: 'Alterar Cadastro'}} />
-          <stack.Screen name="Perfil" component={Profile} options={{headerShown: false, drawerLabel: 'Perfil'}} />
-
+        
         </stack.Navigator>
       </NavigationContainer>
     )

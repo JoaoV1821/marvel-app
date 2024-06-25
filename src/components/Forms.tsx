@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Dimensions, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Dimensions, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import {useForm} from 'react-hook-form'
 import TextField from './TextField';
@@ -9,7 +9,6 @@ import User from '../models/UserModel';
 import { AppButton } from './AppButtons';
 import { RootState } from '../reducers';
 import * as ImagePicker from 'expo-image-picker';
-
 
 interface Input {
   email: string,
@@ -49,8 +48,9 @@ const Forms = (props: {method: string}) => {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      console.log(selectedImage)
     } else {
-      alert('You did not select any image.');
+      
     }
   };
 
@@ -101,15 +101,17 @@ useEffect(() => {
 }, [])  
 
   const onSubmit = (data: Input) => {
-    const user : User  = new User(data.nome, data.email, data.senha, data.telefone, currentUser.id);
+    const user : User  = new User(data.nome, data.email, data.senha, data.telefone, currentUser.id, selectedImage);
 
     if(props.method === "POST") {
-      user.cadastrar()
-      console.log('POST')
+      user.cadastrar().then(() => {
+        Alert.alert("Usuário cadastrado com sucesso !")
+      })
 
     } else if (props.method === "PUT") {
-      user.atualizar();
-      console.log('PUT')
+      user.atualizar().then(() => {
+        Alert.alert("Usuário atualizado com sucesso !")
+      })
 
     }
   }

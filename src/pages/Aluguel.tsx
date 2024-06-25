@@ -4,60 +4,16 @@ import TextField from '../components/TextField';
 import { SearchButton } from '../components/SearchButton';
 import ComicModel from '../models/ComicsModel';
 import { getComicList } from '../services/API';
+import AluguelComic from '../models/AluguelModel';
+import { useSelector } from 'react-redux';
+import { RootState } from '../reducers';
 
 
-const carouselData = [
-  {
-    id: '01',
-    image: 'https://i.annihil.us/u/prod/marvel/i/mg/1/e0/4bb4ecb6aa5a9.jpg',
-    title: 'Titulo 100'
-  },
 
-  {
-    id: '02',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/d/70/4bc69c7e9b9d7.jpg',
-    title: 'Titulo 3'
-  },
 
-  {
-    id: '03',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/c/80/4bc5fe7a308d7.jpg',
-    title: 'Titulo 1'
-  },
+const Card = (props: { image: string; title: string, id: number }) => {
 
-  {
-    id: '04',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg',
-    title: 'Titulo 8'
-  },
-
-  {
-    id: '05',
-    image: 'https://i.annihil.us/u/prod/marvel/i/mg/1/e0/4bb4ecb6aa5a9.jpg',
-    title: 'Titulo 1'
-  },
-
-  {
-    id: '06',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/d/70/4bc69c7e9b9d7.jpg',
-    title: 'Titulo 0'
-  },
-
-  {
-    id: '07',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/c/80/4bc5fe7a308d7.jpg',
-    title: 'Titulo 77'
-  },
-
-  {
-    id: '08',
-    image: 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg',
-    title: 'Titulo 88'
-  },
-
-];
-
-const Card = (props: { image: string; title: string }) => {
+  const currentUser = useSelector((state: RootState) => state.currentUser.user)
 
 
   const handlePress = () => {
@@ -71,8 +27,11 @@ const Card = (props: { image: string; title: string }) => {
         },
         {
           text: 'sim',
-          onPress: () => {
-            console.log(`Quadrinho "${props.title}" alugado`);
+          onPress: async () => {
+            const aluguel: AluguelComic = new AluguelComic(currentUser.id, props.id, props.title, props.image, new Date(new Date().setDate(new Date().getDate() + 5)).toISOString().split('T')[0]);
+
+            console.log(aluguel);
+            await aluguel.postAluguel();
           },
         },
       ]
@@ -96,7 +55,7 @@ const Card = (props: { image: string; title: string }) => {
         
         <View style={styles.containerTitleQuadrinho}>
           <Text>{props.title}</Text>
-        </View>
+        </View> 
       </View>
     </TouchableOpacity>
   );
@@ -112,6 +71,10 @@ const Aluguel = (): React.JSX.Element => {
   
   const [comics, setComics] = useState([]);
   
+
+  const handlePostAluguel = async () => {
+
+  }
   const handleResponse =  async () => {
       const result = await getComicList();
       const hqs = [];
@@ -146,18 +109,22 @@ const Aluguel = (): React.JSX.Element => {
   
 
   const onSubmit = (titulo: string) => {
+
     if (titulo === "") {
-      const sortedData = [...carouselData].sort((a, b) => {
+      const sortedData = [...dynamicCarouselData].sort((a, b) => {
         return a.title.localeCompare(b.title);
       });
-      setDynamicCarouselData(sortedData);
+
+      setDynamicCarouselData(sortedData );
       setNoResults(false);
       setSortOrder('desc');
+
     } else {
-      const filteredData = carouselData.filter((item) => item.title.toLowerCase().includes(titulo.toLowerCase()));
+      const filteredData = dynamicCarouselData.filter((item) => item.title.toLowerCase().includes(titulo.toLowerCase()));
       const sortedData = [...filteredData].sort((a, b) => {
         return a.title.localeCompare(b.title);
       });
+
       setDynamicCarouselData(sortedData);
       setNoResults(sortedData.length === 0);
       setSortOrder('desc');
@@ -195,7 +162,8 @@ const Aluguel = (): React.JSX.Element => {
       <ScrollView scrollIndicatorInsets={{ right: 1 }} indicatorStyle="black">
         <View style={styles.listView}>
           {dynamicCarouselData.map((item, index) => (
-            <Card key={item.id} image={item.img} title={item.title}/>
+            
+            <Card key={item.id} image={item.img} title={item.title} id={item.id}/>
           ))}
         </View>
       </ScrollView>
@@ -207,8 +175,9 @@ const styles = StyleSheet.create({
 
   body: {
     flex: 1,
-    marginTop: 25,
+    
     backgroundColor: '#000',
+    
   },
 
   searchContainer: {
@@ -216,6 +185,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 15,
     marginBottom: 10,
+    marginTop: 25
+
   },
 
   orderContainer: {

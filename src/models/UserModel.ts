@@ -4,27 +4,23 @@ import { updateUser } from "../services/API";
 
 export default class User {
    
-    constructor (private nome: string, private email: string, private senha: string, private telefone: string, private id: number) {
+    constructor (private nome: string, private email: string, private senha: string, private telefone: string, private id: number, private foto: string) {
         
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.telefone = telefone;
         this.id = id;
+        this.foto = foto;
     }
     
 
     public async cadastrar  () {
-
-        console.log(this);
-    
-        const response = await postUser(this);
+        await postUser(this);
     }
 
-    public async atualizar() {
-        console.log(this);
-        
-        const response = await updateUser(this);
+    public async atualizar() {  
+        await updateUser(this);
 
     }
 

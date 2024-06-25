@@ -36,21 +36,21 @@ const Dashboard = (): React.JSX.Element => {
   const [response, setResponse] = useState([]);
   const [comics, setComics] = useState([]);
   const currentUser = useSelector((state: RootState) => state.currentUser);
+  console.log(currentUser);
   
   const handleResponse =  async () => {
       const result = await getComicList();
       const hqs = [];
 
-      console.log(result['results']);
+      
 
       result.map((comic: any) => {
         const hq = new ComicModel(comic.id, comic.title, `${comic.thumbnail.path}.${comic.thumbnail.extension}`);
-        console.log(hq);
         hqs.push(hq);
       })
 
       setResponse(hqs);
-      console.log(currentUser)
+   
   }
 
   useEffect (() => {

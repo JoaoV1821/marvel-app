@@ -18,7 +18,7 @@ const Login = ({navigation}): React.JSX.Element => {
 
   const dispatch = useDispatch();
   const [user, setUser] = useState([]);
-  
+  const [authError, setAuthError] = useState('');
 
   const handleGetAllUsers = async () => {
     
@@ -27,8 +27,6 @@ const Login = ({navigation}): React.JSX.Element => {
      }) ;
    
   }
-
-
 
   const fieldsValidationSchema = object().shape({
     email: string().required('*Digite seu email!').email('*Email inválido!'),
@@ -50,7 +48,7 @@ const Login = ({navigation}): React.JSX.Element => {
       dispatch(userActions.setUser(foundUser));
       navigation.navigate('drawler')
     } else {
-      console.log("User not found");
+      setAuthError('Usuário ou senha inválidos!')
     }
   }
 
@@ -70,9 +68,12 @@ const Login = ({navigation}): React.JSX.Element => {
             <View style={styles.opacity}>
             <Image source={require('../../assets/logo.png')} style={{width: '80%', height: '30%', top: 90, left: 40}}/>
             <View style={styles.loginContainer}>
-            
-                  <TextField label={'Email'} placeholder={'Digite seu email'} onChangeText={(text: string) => setValue( "email", text)} error={errors?.email} style={errors.email ? styles.error: styles.input}   placeholderTextColor={'white'} />
-                  <TextField label={'Senha'} placeholder={'Digite sua senha'} onChangeText={(text: string) => setValue( "senha", text)} error={errors?.senha} style={errors.senha ? styles.error: styles.input} secureTextEntry={true} placeholderTextColor={'white'}/>
+                  {authError ? <Text style={{color: 'red'}}>{authError}</Text> : null} 
+
+                  <TextField label={'Email'} placeholder={'Digite seu email'} onChangeText={(text: string) => setValue( "email", text)} error={errors?.email} style={errors.email ? styles.error: styles.input}   placeholderTextColor={'white'} onFocus= {() => setAuthError('')} />
+
+                  <TextField label={'Senha'} placeholder={'Digite sua senha'} onChangeText={(text: string) => setValue( "senha", text)} error={errors?.senha} style={errors.senha ? styles.error: styles.input} secureTextEntry={true} placeholderTextColor={'white'} onFocus={() => setAuthError('')} />
+
                   <AppButton onPress={handleSubmit(onSubmit)} title={'Entrar'}/>
                   <Text style={styles.smallText} onPress={() => navigation.navigate('Autocadastro')}>
                       Não tem uma conta? Toque para criar uma
